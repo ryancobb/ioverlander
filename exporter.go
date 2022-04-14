@@ -21,7 +21,6 @@ func write_file(feature_collection FeatureCollection, i int) {
   fmt.Println(file_name)
 
   err := ioutil.WriteFile(file_name, json_data, 0644)
-
   if err != nil {
     fmt.Println(fmt.Sprintf("Error writing file: %s", file_name))
   }

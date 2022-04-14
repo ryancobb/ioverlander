@@ -1,5 +1,9 @@
 package main
 
+import (
+  "fmt"
+  )
+
 type Properties struct { 
   Name        string `json:"name"`
   Category    string `json:"category"`
@@ -75,9 +79,8 @@ func ConvertToFeatureCollections(features []Feature) []FeatureCollection {
 }
 
 func build_description(point OverlanderPoint) string {
-  // fetch_page(point.Id)
-
-  // return strconv.Itoa(point.Id) + "\n\n" + point.Category + "\n\n" + point.Description
-  return point.Category + "\n\n" + point.Description
+  description := fmt.Sprintf("%s\n\n%s\n\n%s", point.Category, point.Description, point.Comments)
+  
+  return description
 }
 

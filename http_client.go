@@ -7,6 +7,7 @@ import (
   "net/http"
   "net/url"
   "strconv"
+  "strings"
 
   "github.com/PuerkitoBio/goquery"
   )
@@ -20,6 +21,7 @@ type OverlanderPoint struct {
     Latitude    float64 `json:"latitude"`
     Longitude   float64 `json:"longitude"`
   } `json:"location"`
+  Comments  string
 }
 
 func FetchPoints() []OverlanderPoint {
@@ -39,11 +41,16 @@ func FetchPoints() []OverlanderPoint {
   }
 
   fmt.Printf("points: %d\n", len(parsed_points))
+  fmt.Println("Fetching comments...")
+
+  for _, point := range parsed_points {
+    point.Comments = fetch_comments(point.Id)
+  }
 
   return parsed_points
 }
 
-func fetch_page(id int) {
+func fetch_comments(id int) string {
   u := url.URL{
     Scheme: "https",
     Host: "ioverlander.com",
@@ -62,10 +69,16 @@ func fetch_page(id int) {
     fmt.Println(err)
   }
 
+  comments := []string{}
   doc.Find(".placeCheckin").Each(func(i int, s *goquery.Selection) {
+    date := s.Find("a").First().Text()
     description := s.Find("p").Text()
-    fmt.Println(description)
+
+    comment := fmt.Sprintf("%s\n%s\n", date, description)
+    comments = append(comments, comment)
   })
+
+  return strings.Join(comments, "\n")
 }
 
 func points_url() string {
