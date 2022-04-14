@@ -40,10 +40,12 @@ func FetchPoints() []OverlanderPoint {
     fmt.Println("Error unmarshalling JSON")
   }
 
-  fmt.Printf("points: %d\n", len(parsed_points))
+  fmt.Printf("points: %d\n\n", len(parsed_points))
   fmt.Println("Fetching comments...")
 
-  for _, point := range parsed_points {
+  for i, point := range parsed_points {
+    fmt.Printf("[%d/%d]\n", i + 1, len(parsed_points))
+
     point.Comments = fetch_comments(point.Id)
   }
 
@@ -93,8 +95,8 @@ func points_url() string {
   v.Add("filter[]", "wild_campsite")
   // v.Add("searchboxmin", "40,-130")
   // v.Add("searchboxmax", "55,-110")
-  v.Add("searchboxmin", "40,-130")
-  v.Add("searchboxmax", "50,-110")
+  v.Add("searchboxmin", "49,-130")
+  v.Add("searchboxmax", "51,-120")
 
   u.RawQuery = v.Encode()
 
