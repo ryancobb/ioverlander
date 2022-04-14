@@ -24,6 +24,10 @@ type OverlanderPoint struct {
   Comments  string
 }
 
+func (point *OverlanderPoint) UpdateComments(comments string) {
+  point.Comments = comments
+}
+
 func FetchPoints() []OverlanderPoint {
   fmt.Println("Fetching points...")
 
@@ -40,13 +44,13 @@ func FetchPoints() []OverlanderPoint {
     fmt.Println("Error unmarshalling JSON")
   }
 
-  fmt.Printf("points: %d\n\n", len(parsed_points))
   fmt.Println("Fetching comments...")
 
-  for i, point := range parsed_points {
+  for i := range parsed_points {
     fmt.Printf("[%d/%d]\n", i + 1, len(parsed_points))
-
-    point.Comments = fetch_comments(point.Id)
+    
+    comments := fetch_comments(parsed_points[i].Id)
+    parsed_points[i].UpdateComments(comments)
   }
 
   return parsed_points
@@ -93,8 +97,8 @@ func points_url() string {
   v := url.Values{}
   v.Add("filter[]", "informal_campsite")
   v.Add("filter[]", "wild_campsite")
-  // v.Add("searchboxmin", "40,-130")
-  // v.Add("searchboxmax", "55,-110")
+  // v.Add("searchboxmin", "49,-130")
+  // v.Add("searchboxmax", "49,-110")
   v.Add("searchboxmin", "49,-130")
   v.Add("searchboxmax", "51,-120")
 

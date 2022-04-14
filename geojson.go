@@ -80,7 +80,7 @@ func ConvertToFeatureCollections(features []Feature) []FeatureCollection {
 
 func build_description(point OverlanderPoint) string {
   description := fmt.Sprintf("%s\n\n%s\n\n%s", point.Category, point.Description, point.Comments)
-  
+ 
   return description
 }
 
